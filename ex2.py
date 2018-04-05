@@ -25,13 +25,30 @@ def normDistDensity(x, mean, standartDeviation):
     """
     return (1.0 / (standartDeviation * sqrt(2 * pi))) * np.exp((-(x - mean) ** 2) / (2 * (standartDeviation**2)))
 
-def sofmax(i, w, xt, b):
+def softmax(i, w, xt, b):
+    """
+    return the probability that xt belongs to class i + 1 according to parameters w and b
+    :param i: indicates class index
+    :param w: classes features matrix
+    :param xt: example
+    :param b: constants vector
+    :return: probability that xt belongs to class i + 1 according to parameters w and b
+    """
     dominator = 0
     for j in range (3):
         dominator += np.exp(w[j] * xt + b[j])
     return np.exp(w[i] * xt + b[i]) / dominator
 
 def training(w, b, eta, s):
+    """
+    creates 300 examples, 100 for each of the three classes and go through the training set
+    to find the optimal w and b. Training is done in logistic regression method using SGD update rule.
+    :param w: classes features matrix
+    :param b: constants vector
+    :param eta: training rate
+    :param s: training set
+    :return: no return
+    """
     for tag in range(1, 4): #creating examples for
         examples = createExamples(tag)
         for example in examples:
@@ -44,33 +61,46 @@ def training(w, b, eta, s):
             # updating w and b
             for i in range(3):
                 if (i + 1 == tag):
-                    w_tag = -example + sofmax(i, w, example, b) * example
-                    b_tag = -1 + sofmax(i, w, example, b)
+                    #  gradient of loss function (softmax) according to w[i] in the example coordinate
+                    w_tag = -example + softmax(i, w, example, b) * example
+                    #  gradient of loss function (softmax) according to b[i] in the example coordinate
+                    b_tag = -1 + softmax(i, w, example, b)
                 else:
-                    w_tag = sofmax(i, w, example, b) * example
-                    b_tag = sofmax(i, w, example, b)
+                    w_tag = softmax(i, w, example, b) * example
+                    b_tag = softmax(i, w, example, b)
                 w[i] = w[i] - eta * w_tag
                 b[i] = b[i] - eta * b_tag
 
 def showTrainingResults(w, b):
+    """
+    plotting graph of the real distribution and the softmax distribution according to w, b
+    for x in range [0, 10]
+    :param w: classes features matrix
+    :param b: constants vector
+    :return:
+    """
     realDist = {}
     trainDist= {}
     for x in range(0, 11):
         realDist[x] = (normDistDensity(x, 2, 1) /
                        (normDistDensity(x, 2, 1) + normDistDensity(x, 4, 1) + normDistDensity(x, 6, 1)))
-        trainDist[x] = sofmax(0, w, x, b)
+        trainDist[x] = softmax(0, w, x, b)
     line1, =plt.plot(realDist.keys(), realDist.values(), "orange", label='Real Distribution')
     line2, =plt.plot(trainDist.keys(), trainDist.values(), "purple", label='Softmax Distribution')
+    # drawing name of the graphs
     plt.legend(handler_map={line1: HandlerLine2D(numpoints=4)})
     plt.show()
 
 def main():
-    w = [0, 0, 0]   #classes features matrix
-    b = [0, 0, 0]
-    eta = 0.3   #learning rate
-    s = []  #training set
+    """
+    learn w and b and draw the results comparing to the real distribution.
+    """
+    w = [0, 0, 0]   # classes features matrix - 3 classes (columns), each class got one feature (rows)
+    b = [0, 0, 0]   # constants vector
+    eta = 0.1   # learning rate
+    s = []  # training set
     training(w, b, eta, s)  # learn w and b vectors according to training set s
-    showTrainingResults(w, b)   #draw graphs of the real distribution and the sotmax distribution (according to w, b)
+    showTrainingResults(w, b)   # draw graphs of the real distribution and the sotmax distribution (according to w, b)
 
 if __name__ == "__main__":
     main()
