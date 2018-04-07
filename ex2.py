@@ -1,5 +1,4 @@
 import numpy as np
-from random import shuffle
 from math import *
 import matplotlib.pyplot as plt
 from matplotlib.legend_handler import HandlerLine2D
@@ -49,7 +48,7 @@ def training(w, b, eta, s):
     :param s: training set
     :return: no return
     """
-    for tag in range(1, 4): #creating examples for
+    for tag in range(1, 4): # creating examples for
         examples = createExamples(tag)
         for example in examples:
             s.append((example, tag))
@@ -100,7 +99,7 @@ def main():
     eta = 0.1   # learning rate
     s = []  # training set
     training(w, b, eta, s)  # learn w and b vectors according to training set s
-    showTrainingResults(w, b)   # draw graphs of the real distribution and the sotmax distribution (according to w, b)
+    showTrainingResults(w, b)   # draw graphs of the real distribution and the softmax distribution (according to w, b)
 
 if __name__ == "__main__":
     main()
