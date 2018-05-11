@@ -24,7 +24,7 @@ def normDistDensity(x, mean, standartDeviation):
     """
     return (1.0 / (standartDeviation * sqrt(2 * pi))) * np.exp((-(x - mean) ** 2) / (2 * (standartDeviation**2)))
 
-def softmax(i, w, xt, b):
+def softmax(i, w, xt,b):
     """
     return the probability that xt belongs to class i + 1 according to parameters w and b
     :param i: indicates class index
@@ -35,7 +35,7 @@ def softmax(i, w, xt, b):
     """
     dominator = 0
     for j in range (3):
-        dominator += np.exp(w[j] * xt + b[j])
+        dominato<r += np.exp(w[j] * xt + b[j])
     return np.exp(w[i] * xt + b[i]) / dominator
 
 def training(w, b, eta, s):
