@@ -29,7 +29,7 @@ def train(params, epochs, active_fucntion, learning_rate, train_x, train_y, vali
 
 def forwardPass(params, active_function, x):
     W1, b1, W2, b2 = [params[key] for key in ('W1', 'b1', 'W2', 'b2')]
-    z1 = np.dot(W1, np.transpose(x)) + b1
+    z1 = np.dot(W1, np.transpose(x))  + b1
     h1 = active_function(z1)
     z2 = np.dot(W2, h1) + b2
     h2 = softmax(W2, h1, b2)
@@ -76,11 +76,11 @@ def main():
     train_x, train_y = train_x[: -vaulidaton_size, :], train_y[: -vaulidaton_size]
 
     # Defining hyper-parameters
-    h = 20
+    h = 300
     w_1 = np.random.rand(h, EXAMPLE_VECTOR_SIZE)
-    b_1 = np.random.rand(h, 1)
+    b_1 = np.random.rand(h)
     w_2 = np.random.rand(NUMBER_OF_CLASSES, h)
-    b_2 = np.random.rand(NUMBER_OF_CLASSES, 1)
+    b_2 = np.random.rand(NUMBER_OF_CLASSES)
     sigmoid = lambda x: 1 / (1 + np.exp(-x)) # activation functions
     eta = 0.1
     epochs = 20
