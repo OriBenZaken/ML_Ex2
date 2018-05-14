@@ -35,7 +35,7 @@ def softmax(i, w, xt,b):
     """
     dominator = 0
     for j in range (3):
-        dominato<r += np.exp(w[j] * xt + b[j])
+        dominator += np.exp(w[j] * xt + b[j])
     return np.exp(w[i] * xt + b[i]) / dominator
 
 def training(w, b, eta, s):
